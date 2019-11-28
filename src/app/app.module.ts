@@ -17,6 +17,9 @@ import { ArticleComponent } from './pages/article/article.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+
+// service
+import { ArticleService } from './pages/article/article.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +37,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     BrowserAnimationsModule,
     NgZorroAntdModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [ArticleService]
 })
 export class AppModule { }

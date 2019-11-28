@@ -1,10 +1,10 @@
 <ul nz-menu [nzMode]="'inline'" [nzTheme]="'dark'">
   <li nz-submenu nzTitle="导航" nzOpen>
     <ul>
-      <li nz-menu-item>
+      <li nz-menu-item nzMatchRouterExact="true">
         <a [routerLink]="['/', 'article']">文章管理</a>
       </li>
-      <li nz-menu-item>
+      <li nz-menu-item nzMatchRouterExact="true">
         <a [routerLink]="['/', 'category']">文章分类管理</a>
       </li>
       <li nz-submenu nzTitle="特殊管理">
