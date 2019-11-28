@@ -17,6 +17,7 @@ import { ArticleComponent } from './pages/article/article.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // service
 import { ArticleService } from './pages/article/article.service';
@@ -27,7 +28,7 @@ import { ArticleService } from './pages/article/article.service';
     ArticleComponent,
     CategoryComponent,
     WelcomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +36,8 @@ import { ArticleService } from './pages/article/article.service';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgZorroAntdModule
+    NgZorroAntdModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent],
   providers: [ArticleService]

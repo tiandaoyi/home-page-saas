@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 export class ArticleService {
   constructor(private http: HttpClient) {}
   getAllArticle() {
-    return this.http.get('localhost:3001/api/article/all');
+    return this.http.get('/api/article/all');
   }
 }
 
