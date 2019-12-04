@@ -6,4 +6,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'home-page-saas';
+  isCollapsed = false;
+
+  toggleCollapsed(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
 }

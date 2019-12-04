@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 @Component({
   selector: 'app-menu',
@@ -8,7 +8,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 export class MenuComponent implements OnInit {
   mode = false;
   dark = false;
-  isCollapsed = false;
+  @Input() isCollapsed: boolean;
   constructor() { }
 
   ngOnInit() {

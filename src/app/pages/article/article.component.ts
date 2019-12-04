@@ -38,27 +38,23 @@ export class ArticleComponent implements OnInit {
         };
       });
     });
-
   }
+
   onDetailClick(): void {
     this.isVisible = true;
   }
 
   handleOk(): void {
-    this.isOkLoading = true;
-    setTimeout(() => {
+    console.log('49', this.validateForm);
+    const { title, content } = this.validateForm.value;
+    this.http.requestSaveArticle(title, content).subscribe(data => {
+      console.log(data);
       this.isVisible = false;
-      this.isOkLoading = false;
-    }, 3000);
+    });
   }
 
   handleCancel(): void {
     this.isVisible = false;
   }
-
-  submitForm(): void {
-    console.log(this.validateForm.controls);
-    return;
-      }
 }
 

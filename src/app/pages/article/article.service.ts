@@ -7,5 +7,8 @@ export class ArticleService {
   getAllArticle() {
     return this.http.get('/api/article/all');
   }
+  requestSaveArticle(title: string, content: string) {
+    return this.http.get(`/api/article/create?title=${title}&content=${content}`);
+  }
 }
 
