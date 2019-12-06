@@ -22,18 +22,16 @@
     </tbody>
   </nz-table>
 </nz-card>
+
 <nz-modal
   [(nzVisible)]="isVisible"
   nzTitle="文章管理"
-  (nzOnCancel)="handleCancel()"
-  (nzOnOk)="handleOk()"
   [nzOkLoading]="isOkLoading"
   [nzFooter]="null"
   >
   <form
     nz-form
     [formGroup]="validateForm"
-    (ngSubmit)="handleOk()"
     >
     <nz-form-item>
       <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">标题</nz-form-label>
@@ -55,8 +53,14 @@
     <nz-form-item [style.textAlign]="'center'">
       <nz-form-control>
         <button nz-button (click)="handleCancel()" [style.marginRight]="'8px'">取消</button>
-        <button nz-button nzType="primary" [disabled]="!validateForm.valid">保存</button>
+        <button nz-button (click)="handleOk()"  zType="primary" [disabled]="!validateForm.valid">保存</button>
       </nz-form-control>
     </nz-form-item>
   </form>
-</nz-modal>
+  <div id="md" *ngIf="isVisible" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)" >
+    <textarea style="display: block;" [(ngModel)]="markdown"></textarea>
+  </div>
+
+  <!--<markdown src="/assets/README.md" lineNumbers [start]="5"></markdown>-->
+  </nz-modal>
+

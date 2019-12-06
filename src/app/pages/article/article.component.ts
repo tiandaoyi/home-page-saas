@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ArticleService } from './article.service';
 import moment from 'moment-es6';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { EditorConfig } from '../../common/model/editor-config';
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
@@ -16,13 +17,15 @@ export class ArticleComponent implements OnInit {
   isOkLoading = false;
   validateForm: FormGroup;
 
+  markdown = '测试语句';
+  conf = new EditorConfig();
   constructor(private http: ArticleService, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.tableDateInit();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
-      content: [null, [Validators.required]]
+      content: [null, [Validators.required]],
     });
   }
 
@@ -54,7 +57,15 @@ export class ArticleComponent implements OnInit {
   }
 
   handleCancel(): void {
+    console.log('60');
     this.isVisible = false;
   }
+
+  // 同步属性内容
+  syncModel(str): void {
+    console.log('66', str);
+    this.markdown = str;
+  }
+
 }
 
