@@ -1,5 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {
+  Injectable
+} from '@angular/core';
+import {
+  HttpClient
+} from '@angular/common/http';
 
 @Injectable()
 export class ArticleService {
@@ -8,7 +12,10 @@ export class ArticleService {
     return this.http.get('/api/article/all');
   }
   requestSaveArticle(title: string, content: string) {
-    return this.http.get(`/api/article/create?title=${title}&content=${content}`);
+    return this.http.post(
+      '/api/article/create', {
+        title,
+        content
+      });
   }
 }
-

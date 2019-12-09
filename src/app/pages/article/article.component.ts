@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ArticleService } from './article.service';
 import moment from 'moment-es6';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,7 +6,8 @@ import { EditorConfig } from '../../common/model/editor-config';
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
-  styleUrls: ['./article.component.scss']
+  styleUrls: ['./article.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ArticleComponent implements OnInit {
   // 列表数据
@@ -17,7 +18,7 @@ export class ArticleComponent implements OnInit {
   isOkLoading = false;
   validateForm: FormGroup;
 
-  markdown = '测试语句';
+  markdown = '';
   conf = new EditorConfig();
   constructor(private http: ArticleService, private fb: FormBuilder) { }
 
@@ -25,7 +26,7 @@ export class ArticleComponent implements OnInit {
     this.tableDateInit();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
-      content: [null, [Validators.required]],
+      content: null
     });
   }
 
@@ -49,7 +50,9 @@ export class ArticleComponent implements OnInit {
 
   handleOk(): void {
     console.log('49', this.validateForm);
-    const { title, content } = this.validateForm.value;
+    const { title } = this.validateForm.value;
+    const content = this.markdown;
+    console.log(content);
     this.http.requestSaveArticle(title, content).subscribe(data => {
       console.log(data);
       this.isVisible = false;

@@ -25,12 +25,12 @@
 
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="文章管理"
-  [nzOkLoading]="isOkLoading"
-  [nzFooter]="null"
+  nzTitle="文章管理" 
+  [nzOkLoading]="isOkLoading" [nzFooter]="null" 
+  nzClassName="article-modal"
+  nzWidth="80%"
   >
-  <form
-    nz-form
+  <form nz-form
     [formGroup]="validateForm"
     >
     <nz-form-item>
@@ -40,15 +40,16 @@
     </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="content" nzRequired>内容</nz-form-label>
-      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your content!">
-        <input
+        <!--<input
           nz-input
           type="text"
           id="content"
           formControlName="content"
           />
-      </nz-form-control>
+        -->
+      <div id="md" *ngIf="isVisible" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)" >
+        <textarea style="display: none;" formControlName="content" [(ngModel)]="markdown"></textarea>
+      </div>
     </nz-form-item>
     <nz-form-item [style.textAlign]="'center'">
       <nz-form-control>
@@ -57,10 +58,7 @@
       </nz-form-control>
     </nz-form-item>
   </form>
-  <div id="md" *ngIf="isVisible" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)" >
-    <textarea style="display: block;" [(ngModel)]="markdown"></textarea>
-  </div>
-
+  
   <!--<markdown src="/assets/README.md" lineNumbers [start]="5"></markdown>-->
   </nz-modal>
 

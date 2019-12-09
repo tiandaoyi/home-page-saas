@@ -20,10 +20,11 @@ export class EditorMdDirective implements AfterViewInit {
       this.editor = editormd(this.id, this.editormdConfig); // 创建编辑器
 
       const out = this.editorChange;
-      const textarea = $(`#${this.id}`); // 获取textarea元素
+      const textarea = $(`#${this.id} textarea`); // 获取textarea元素
       console.log('textrare', textarea);
       // 当编辑器内容改变时，触发textarea的change事件
       this.editor.on('change', () => {
+        console.log(textarea);
         console.log(textarea.val());
         out.emit(textarea.val());
       });
