@@ -18,4 +18,20 @@ export class ArticleService {
         content
       });
   }
+  requestUpdateArticle(id: string, title: string, content: string) {
+    return this.http.post(
+      '/api/article/update', {
+        _id: id,
+        title,
+        content
+      }
+    );
+  }
+  requestDeleteArticle(id: string) {
+    return this.http.post(
+      '/api/article/delete', {
+        _id: id
+      }
+    );
+  }
 }

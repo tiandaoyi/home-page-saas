@@ -1,8 +1,23 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ArticleService } from './article.service';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import {
+  ArticleService
+} from './article.service';
 import moment from 'moment-es6';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EditorConfig } from '../../common/model/editor-config';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import {
+  EditorConfig
+} from '../../common/model/editor-config';
+export type ModalType = 'created' | 'updated';
+
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
@@ -19,18 +34,20 @@ export class ArticleComponent implements OnInit {
   validateForm: FormGroup;
 
   markdown = '';
+  modalType: ModalType = 'created';
+  rowId: string;
   conf = new EditorConfig();
-  constructor(private http: ArticleService, private fb: FormBuilder) { }
+  constructor(private http: ArticleService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.tableDateInit();
+    this.tableDataInit();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
       content: null
     });
   }
 
-  tableDateInit() {
+  tableDataInit() {
     // 查
     this.http.getAllArticle().subscribe((data: any) => {
       console.log('data', data);
@@ -44,31 +61,62 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  onDetailClick(): void {
+  onDetailClick(type: ModalType): void {
+    if (type === 'created') {
+      this.modalType = 'created';
+      this.onResetForm();
+    }
     this.isVisible = true;
   }
 
+  onResetForm() {
+    this.markdown = '';
+    this.validateForm.reset({title: '', content: ''});
+  }
+
   handleOk(): void {
-    console.log('49', this.validateForm);
-    const { title } = this.validateForm.value;
+    const {
+      title
+    } = this.validateForm.value;
     const content = this.markdown;
     console.log(content);
-    this.http.requestSaveArticle(title, content).subscribe(data => {
-      console.log(data);
-      this.isVisible = false;
-    });
+    if (this.modalType === 'created') {
+      this.http.requestSaveArticle(title, content).subscribe(data => {
+        this.isVisible = false;
+        this.tableDataInit();
+      });
+
+    } else {
+      this.http.requestUpdateArticle(this.rowId, title, content).subscribe(data => {
+        this.isVisible = false;
+        this.tableDataInit();
+      });
+
+    }
   }
 
   handleCancel(): void {
-    console.log('60');
     this.isVisible = false;
   }
 
   // 同步属性内容
   syncModel(str): void {
-    console.log('66', str);
     this.markdown = str;
   }
 
-}
+  private onUpdateRow({title, content, _id}): void {
+    // 页面保存状态
+    this.rowId = _id;
+    this.modalType = 'updated';
+    this.isVisible = true;
+    this.markdown = content;
+    this.validateForm.reset({title, content});
+  }
 
+  private onDeleteRow(id: string): void {
+    this.http.requestDeleteArticle(id).subscribe(() => {
+      console.log('删除成功');
+      this.tableDataInit();
+    });
+  }
+}
