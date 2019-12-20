@@ -13,9 +13,11 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import {
   EditorConfig
 } from '../../common/model/editor-config';
+
 export type ModalType = 'created' | 'updated';
 
 @Component({
@@ -37,7 +39,10 @@ export class ArticleComponent implements OnInit {
   modalType: ModalType = 'created';
   rowId: string;
   conf = new EditorConfig();
-  constructor(private http: ArticleService, private fb: FormBuilder) {}
+  constructor(private http: ArticleService,
+              private fb: FormBuilder,
+              private message: NzMessageService
+             ) {}
 
   ngOnInit() {
     this.tableDataInit();
@@ -84,12 +89,14 @@ export class ArticleComponent implements OnInit {
       this.http.requestSaveArticle(title, content).subscribe(data => {
         this.isVisible = false;
         this.tableDataInit();
+        this.message.create('success', '创建成功');
       });
 
     } else {
       this.http.requestUpdateArticle(this.rowId, title, content).subscribe(data => {
         this.isVisible = false;
         this.tableDataInit();
+        this.message.create('success', '  修改成功');
       });
 
     }
@@ -116,6 +123,7 @@ export class ArticleComponent implements OnInit {
   private onDeleteRow(id: string): void {
     this.http.requestDeleteArticle(id).subscribe(() => {
       console.log('删除成功');
+      this.message.create('success', '删除成功');
       this.tableDataInit();
     });
   }
