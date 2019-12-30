@@ -13,7 +13,9 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {
+  NzMessageService
+} from 'ng-zorro-antd/message';
 import {
   EditorConfig
 } from '../../common/model/editor-config';
@@ -42,7 +44,7 @@ export class ArticleComponent implements OnInit {
   constructor(private http: ArticleService,
               private fb: FormBuilder,
               private message: NzMessageService
-             ) {}
+  ) {}
 
   ngOnInit() {
     this.tableDataInit();
@@ -76,7 +78,10 @@ export class ArticleComponent implements OnInit {
 
   onResetForm() {
     this.markdown = '';
-    this.validateForm.reset({title: '', content: ''});
+    this.validateForm.reset({
+      title: '',
+      content: ''
+    });
   }
 
   handleOk(): void {
@@ -111,16 +116,23 @@ export class ArticleComponent implements OnInit {
     this.markdown = str;
   }
 
-  private onUpdateRow({title, content, _id}): void {
+  onUpdateRow({
+    title,
+    content,
+    _id
+  }): void {
     // 页面保存状态
     this.rowId = _id;
     this.modalType = 'updated';
     this.isVisible = true;
     this.markdown = content;
-    this.validateForm.reset({title, content});
+    this.validateForm.reset({
+      title,
+      content
+    });
   }
 
-  private onDeleteRow(id: string): void {
+  onDeleteRow(id: string): void {
     this.http.requestDeleteArticle(id).subscribe(() => {
       console.log('删除成功');
       this.message.create('success', '删除成功');
