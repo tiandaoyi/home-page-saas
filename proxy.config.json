@@ -1,6 +1,17 @@
 {
+  "/local/*": {
+    "target": "http://localhost:7200",
+    "pathRewrite": {
+      "^/local": ""
+    },
+    "secure": false
+  },
+  "/local-inline/*": {
+    "target": "http://okdaoyi.com",
+    "secure": false
+  },
   "/": {
-    "target": "http://localhost:3001/",
+    "target": "http://localhost:7200/",
     "secure": false
   }
 }

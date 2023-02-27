@@ -4,12 +4,12 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-
+const baseUrl = window.location.host.includes('localhost') ? '/local': ''
 @Injectable()
 export class ArticleService {
   constructor(private http: HttpClient) {}
   getAllArticle() {
-    return this.http.get('/api/article/all');
+    return this.http.get(baseUrl + '/api/article/all');
   }
   requestSaveArticle(title: string, content: string) {
     return this.http.post(
@@ -20,7 +20,7 @@ export class ArticleService {
   }
   requestUpdateArticle(id: string, title: string, content: string) {
     return this.http.post(
-      '/api/article/update', {
+      baseUrl + '/api/article/update', {
         _id: id,
         title,
         content
@@ -29,7 +29,7 @@ export class ArticleService {
   }
   requestDeleteArticle(id: string) {
     return this.http.post(
-      '/api/article/delete', {
+      baseUrl + '/api/article/delete', {
         _id: id
       }
     );
