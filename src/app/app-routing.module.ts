@@ -5,6 +5,7 @@ import {
   Routes,
   RouterModule
 } from '@angular/router';
+import { APP_BASE_HREF } from '@angular/common';
 
 import {
   ArticleComponent
@@ -41,13 +42,14 @@ const routes: Routes = [{
   },
   {
     path: '**',
-    redirectTo: '/not-fount',
+    redirectTo: '/not-found',
     pathMatch: 'full',
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  providers: [{ provide: APP_BASE_HREF, useValue: '/saas/' }],
+  imports: [RouterModule.forRoot(routes, {useHash: false})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

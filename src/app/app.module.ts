@@ -57,6 +57,7 @@ import {
 import {
   ReactiveFormsModule
 } from '@angular/forms';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 // service
 import {
@@ -80,6 +81,7 @@ import {
     BrowserAnimationsModule,
     NgZorroAntdModule,
     ReactiveFormsModule,
+    NzPopconfirmModule,
     //    MarkdownModule.forRoot({
     //      markedOptions: {
     //        provide: MarkedOptions,

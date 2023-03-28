@@ -1,7 +1,22 @@
 <nz-card nzTitle="文章管理" class="article">
-  <button nz-button nzType="primary" class="article-create" (click)="onDetailClick('created')">写新文章</button>
+  <button
+    nz-button
+    nzType="primary"
+    class="article-create"
+    (click)="onDetailClick('created')"
+  >
+    写新文章
+  </button>
 
-  <nz-table #basicTable [nzData]="listOfData">
+  <nz-table
+    #basicTable
+    [nzData]="listOfData"
+    [nzFrontPagination]="false"
+    [nzPageSize]="20"
+    [nzSimple]="false"
+    [nzTotal]="total"
+    (nzPageIndexChange)="tableDataInit($event)"
+  >
     <thead>
       <tr>
         <th>标题</th>
@@ -14,54 +29,81 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of basicTable.data">
-        <td>{{item.title}}</td>
-        <td>{{item.span || '无'}}</td>
-        <td>{{item.category || '无'}}</td>
-        <td>{{item._created}}</td> 
-        <td>{{item._updated}}</td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.span || "无" }}</td>
+        <td>{{ item.category || "无" }}</td>
+        <td>{{ item._created }}</td>
+        <td>{{ item._updated }}</td>
         <td>
-          <a nz-popconfirm (click)="onUpdateRow(item)">修改</a> |
-          <a nz-popconfirm (click)="onDeleteRow(item._id)">删除</a>
+          <a nz-popconfirm (click)="onUpdateRow(item._id)">修改</a> |
+          <a
+            nz-popconfirm
+            nzPopconfirmTitle="Are you sure delete this task?"
+            nzPopconfirmPlacement="bottom"
+            nz-popconfirm
+            (nzOnConfirm)="onDeleteRow(item._id)"
+            >删除</a
+          >
         </td>
       </tr>
     </tbody>
   </nz-table>
 </nz-card>
 
-
 <!--弹框-->
 <nz-modal
   [(nzVisible)]="isVisible"
-  nzTitle="{{modalType === 'created' ? '新建文章' : '更新文章' }}" 
-  [nzOkLoading]="isOkLoading" [nzFooter]="null" item._id
+  nzTitle="{{ modalType === 'created' ? '新建文章' : '更新文章' }}"
+  [nzOkLoading]="isOkLoading"
+  [nzFooter]="null"
   nzClassName="article-modal"
   nzWidth="80%"
   (nzOnCancel)="handleCancel()"
-  >
-  <form nz-form
-    [formGroup]="validateForm"
-    >
+>
+  <form nz-form [formGroup]="validateForm">
     <nz-form-item>
-      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title">标题</nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input you title!">
-      <input nz-input formControlName="title" id="title" />
-    </nz-form-control>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="title"
+        >标题</nz-form-label
+      >
+      <nz-form-control
+        [nzSm]="14"
+        [nzXs]="24"
+        nzErrorTip="Please input you title!"
+      >
+        <input nz-input formControlName="title" id="title" />
+      </nz-form-control>
     </nz-form-item>
     <nz-form-item>
-      <div id="md" *ngIf="isVisible" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)" >
-        <textarea style="display: none;" formControlName="content" [(ngModel)]="markdown"></textarea>
+      <div
+        id="md"
+        *ngIf="isVisible"
+        appEditorMd
+        [editormdConfig]="conf"
+        (editorChange)="syncModel($event)"
+      >
+        <textarea
+          style="display: none"
+          formControlName="content"
+          [(ngModel)]="markdown"
+        ></textarea>
       </div>
     </nz-form-item>
     <nz-form-item [style.textAlign]="'center'">
       <nz-form-control>
-        <button nz-button (click)="handleCancel()" [style.marginRight]="'8px'">取消</button>
-        <button nz-button (click)="handleOk()"  zType="primary" [disabled]="!validateForm.valid">
-          {{modalType === 'created' ? '保存' : '更新'}}
+        <button nz-button (click)="handleCancel()" [style.marginRight]="'8px'">
+          取消
+        </button>
+        <button
+          nz-button
+          (click)="handleOk()"
+          zType="primary"
+          [disabled]="!validateForm.valid"
+        >
+          {{ modalType === "created" ? "保存" : "更新" }}
         </button>
       </nz-form-control>
     </nz-form-item>
   </form>
-  
-  <!--<markdown src="/assets/README.md" lineNumbers [start]="5"></markdown>-->
-  </nz-modal>
 
+  <!--<markdown src="/assets/README.md" lineNumbers [start]="5"></markdown>-->
+</nz-modal>

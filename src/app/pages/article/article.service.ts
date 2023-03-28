@@ -8,8 +8,12 @@ const baseUrl = window.location.host.includes('localhost') ? '/local': ''
 @Injectable()
 export class ArticleService {
   constructor(private http: HttpClient) {}
-  getAllArticle() {
-    return this.http.get(baseUrl + '/api/article/all');
+  getAllArticle(params) {
+    return this.http.post(
+      baseUrl + '/api/article/all', {
+        ...params
+      }
+    );
   }
   requestSaveArticle(title: string, content: string) {
     return this.http.post(
@@ -33,5 +37,13 @@ export class ArticleService {
         _id: id
       }
     );
+  }
+
+  requestGetDetail(_id: string) {
+    return this.http.post(
+      baseUrl + '/api/article/getDetail', {
+        _id
+      }
+    )
   }
 }

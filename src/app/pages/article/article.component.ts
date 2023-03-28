@@ -41,6 +41,7 @@ export class ArticleComponent implements OnInit {
   modalType: ModalType = 'created';
   rowId: string;
   conf = new EditorConfig();
+  total = 0;
   constructor(private http: ArticleService,
               private fb: FormBuilder,
               private message: NzMessageService
@@ -54,17 +55,21 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  tableDataInit() {
+  tableDataInit(pageNo = 1) {
     // 查
-    this.http.getAllArticle().subscribe((data: any) => {
-      console.log('data', data);
-      this.listOfData = data.data.map((item) => {
+    this.http.getAllArticle({
+      pageNo,
+      pageSize: 20
+    }).subscribe((data: any) => {
+      this.listOfData = data.data.list.map((item) => {
         return {
           ...item,
           _created: item.created ? moment(item.created).format('YYYY-MM-DD HH:mm:ss') : '',
           _updated: item.updated ? moment(item.updated).format('YYYY-MM-DD HH:mm:ss') : ''
         };
       });
+
+      this.total = data.data.total
     });
   }
 
@@ -77,7 +82,7 @@ export class ArticleComponent implements OnInit {
   }
 
   onResetForm() {
-    this.markdown = '';
+    this.syncModel('')
     this.validateForm.reset({
       title: '',
       content: ''
@@ -91,19 +96,21 @@ export class ArticleComponent implements OnInit {
     const content = this.markdown;
     console.log(content);
     if (this.modalType === 'created') {
-      this.http.requestSaveArticle(title, content).subscribe(data => {
+      this.http.requestSaveArticle(title, content).subscribe(() => {
+        this.onResetForm()
         this.isVisible = false;
         this.tableDataInit();
         this.message.create('success', '创建成功');
       });
 
     } else {
-      this.http.requestUpdateArticle(this.rowId, title, content).subscribe(data => {
+      this.http.requestUpdateArticle(this.rowId, title, content).subscribe(() => {
+        this.onResetForm()
         this.isVisible = false;
         this.tableDataInit();
-        this.message.create('success', '  修改成功');
-      });
+        this.message.create('success', '修改成功');
 
+      });
     }
   }
 
@@ -116,19 +123,19 @@ export class ArticleComponent implements OnInit {
     this.markdown = str;
   }
 
-  onUpdateRow({
-    title,
-    content,
-    _id
-  }): void {
-    // 页面保存状态
-    this.rowId = _id;
-    this.modalType = 'updated';
-    this.isVisible = true;
-    this.markdown = content;
-    this.validateForm.reset({
-      title,
-      content
+  onUpdateRow(id): void {
+    // 临时赋值
+    this.rowId = id
+    // 查
+    this.http.requestGetDetail(id).subscribe((data: any) => {
+      const { title, content } = data.data
+      this.modalType = 'updated';
+      this.isVisible = true;
+      this.validateForm.reset({
+        title,
+        content
+      });
+      this.syncModel(content)
     });
   }
 
