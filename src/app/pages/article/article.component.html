@@ -20,7 +20,7 @@
     <thead>
       <tr>
         <th>标题</th>
-        <th>标签</th>
+        <th>状态</th>
         <th>分类</th>
         <th>发布时间</th>
         <th>更新时间</th>
@@ -30,8 +30,9 @@
     <tbody>
       <tr *ngFor="let item of basicTable.data">
         <td>{{ item.title }}</td>
-        <td>{{ item.span || "无" }}</td>
-        <td>{{ item.category || "无" }}</td>
+        <!-- <td>{{ item.span || "无" }}</td> -->
+        <td [style.color]="!item.show ? 'red' : 'initial'">{{ item.show ? '显示' : '隐藏' }}</td>
+        <td>{{ item._categories }}</td>
         <td>{{ item._created }}</td>
         <td>{{ item._updated }}</td>
         <td>
@@ -59,6 +60,7 @@
   nzClassName="article-modal"
   nzWidth="80%"
   (nzOnCancel)="handleCancel()"
+  [nzKeyboard]="false"
 >
   <form nz-form [formGroup]="validateForm">
     <nz-form-item>

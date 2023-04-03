@@ -1,3 +1,51 @@
-<p>
-  category works!
-</p>
+<nz-card nzTitle="分类管理" class="article">
+  <button
+    nz-button
+    nzType="primary"
+    class="article-create"
+    (click)="onDetailClick('created')"
+  >
+    创建分类
+  </button>
+
+  <nz-table
+    #basicTable
+    [nzData]="listOfData"
+    [nzFrontPagination]="false"
+    [nzPageSize]="20"
+    [nzSimple]="false"
+    [nzTotal]="total"
+    (nzPageIndexChange)="tableDataInit($event)"
+  >
+    <thead>
+      <tr>
+        <th>名称</th>
+        <th>状态</th>
+        <th>发布时间</th>
+        <th>更新时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of basicTable.data">
+        <td>{{ item.name }}</td>
+        <!-- <td>{{ item.span || "无" }}</td> -->
+        <td [style.color]="!item.show ? 'red' : 'initial'">{{ item.show ? '显示' : '隐藏' }}</td>
+        <!-- <td>{{ item._categories }}</td> -->
+        <td>{{ item._created }}</td>
+        <td>{{ item._updated }}</td>
+        <td>
+          <a nz-popconfirm (click)="onUpdateRow(item._id)">修改</a> |
+          <a
+            nz-popconfirm
+            nzPopconfirmTitle="Are you sure delete this task?"
+            nzPopconfirmPlacement="bottom"
+            nz-popconfirm
+            (nzOnConfirm)="onDeleteRow(item._id)"
+            >删除</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

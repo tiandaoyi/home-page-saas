@@ -11,10 +11,10 @@ import {
   FormsModule
 } from '@angular/forms';
 // markdown
-import {
-  MarkdownModule,
-  MarkedOptions
-} from 'ngx-markdown';
+// import {
+//   MarkdownModule,
+//   MarkedOptions
+// } from 'ngx-markdown';
 import { EditorMdDirective } from './common/editor-md.directive';
 
 import {
@@ -22,8 +22,8 @@ import {
 } from '@angular/common/http';
 import {
   NgZorroAntdModule,
-  NZ_I18N,
-  zh_CN
+  // NZ_I18N,
+  // zh_CN
 } from 'ng-zorro-antd';
 import {
   AppRoutingModule
@@ -63,6 +63,9 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import {
   ArticleService
 } from './pages/article/article.service';
+import {
+  CategoryService
+} from './pages/category/category.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,6 +101,6 @@ import {
     //    })
   ],
   bootstrap: [AppComponent],
-  providers: [ArticleService]
+  providers: [ArticleService, CategoryService]
 })
 export class AppModule {}

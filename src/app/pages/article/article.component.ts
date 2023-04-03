@@ -48,6 +48,22 @@ export class ArticleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // 删除所有超时的数据（超过30分钟的数据）
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.indexOf('tempData_') === 0) {
+
+        const timestamp = key.split('_')[1]
+        const diffMinutes = moment().diff(moment(timestamp + ':' + (Number(key.split('_')[2]) - 1 * 5), 'YYYY-MM-DD HH:mm'))
+        // 超过24小时的数据清空
+        if (diffMinutes > 24 * 60 * 60 * 1000) {
+          localStorage.removeItem(key);
+        }
+      }
+    }
+
+
+
     this.tableDataInit();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
@@ -59,13 +75,15 @@ export class ArticleComponent implements OnInit {
     // 查
     this.http.getAllArticle({
       pageNo,
-      pageSize: 20
+      pageSize: 20,
+      isShowInvalid: true
     }).subscribe((data: any) => {
       this.listOfData = data.data.list.map((item) => {
         return {
           ...item,
           _created: item.created ? moment(item.created).format('YYYY-MM-DD HH:mm:ss') : '',
-          _updated: item.updated ? moment(item.updated).format('YYYY-MM-DD HH:mm:ss') : ''
+          _updated: item.updated ? moment(item.updated).format('YYYY-MM-DD HH:mm:ss') : '',
+          _categories: (item.categories || []).map(child => (child.name)).join(',') || '无'
         };
       });
 
@@ -118,8 +136,19 @@ export class ArticleComponent implements OnInit {
     this.isVisible = false;
   }
 
+  // 按把一小时按多少分钟，分段计算
+  getTimestampStrByMinutes(minutes = 5) {
+    // 假如是5分钟一次, 生成的数字1-12
+    return String((new Date().getMinutes() / minutes >> 0) + 1)
+  }
+
   // 同步属性内容
   syncModel(str): void {
+    // 定时备份
+    if (str) {
+      const now = moment().format('YYYY-MM-DD HH')
+      localStorage.setItem('tempData_' + now + '_' + this.getTimestampStrByMinutes(), str);
+    }
     this.markdown = str;
   }
 

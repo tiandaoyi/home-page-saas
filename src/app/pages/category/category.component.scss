@@ -1,0 +1,15 @@
+.article {
+  margin: 20px;
+
+  &-create {
+    margin-bottom: 16px;
+  }
+
+}
+
+.ant-modal-wrap {
+  & > .article-modal {
+    width: 80%;
+  }
+}
+
