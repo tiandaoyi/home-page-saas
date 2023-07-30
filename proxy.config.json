@@ -7,8 +7,8 @@
     "secure": false
   },
   "/local-inline/*": {
-    "target": "http://okdaoyi.com",
-    "secure": false
+    "target": "https://okdaoyi.com",
+    "secure": true
   },
   "/": {
     "target": "http://localhost:7200/",
