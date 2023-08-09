@@ -62,8 +62,6 @@ export class ArticleComponent implements OnInit {
       }
     }
 
-
-
     this.tableDataInit();
     this.validateForm = this.fb.group({
       title: [null, [Validators.required]],
