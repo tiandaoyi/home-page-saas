@@ -7,7 +7,7 @@
     "secure": false
   },
   "/local-inline/*": {
-    "target": "https://okdaoyi.com",
+    "target": "https://dyi.asia",
     "secure": true
   },
   "/": {
